@@ -33,7 +33,7 @@ export default function PageBanner({
 
           {/* Badge (Optional) */}
           <span className="mb-6 inline-flex rounded-full border border-violet-200 bg-violet-100 px-5 py-2 text-sm font-semibold text-violet-700 shadow-sm">
-            Central Biomedicals
+            Raj Biosis
           </span>
 
           {/* Title */}

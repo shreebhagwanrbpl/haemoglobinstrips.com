@@ -1,23 +1,16 @@
 "use client";
-import {
-  Microscope,
-  FlaskConical,
-  ShieldCheck,
-  Stethoscope,
-  Wrench,
-  Activity,
-} from "lucide-react";
-
-import PageBanner from "@/components/PageBanner";
+import { Microscope, FlaskConical, ShieldCheck, Stethoscope, Wrench, Activity, CheckCircle2 } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import ServiceCard from "@/components/ServiceCard";
 import CTASection from "@/components/CTASection";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+
 export default function ServicesPage() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const icons = [
     <Microscope size={30} />,
     <FlaskConical size={30} />,
@@ -26,19 +19,11 @@ export default function ServicesPage() {
     <Wrench size={30} />,
     <Activity size={30} />,
   ];
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const snap = await getDoc(
-          doc(
-            db,
-            "websites",
-            "centralbiomedicals",
-            "pages",
-            "services"
-          )
-        );
-
+        const snap = await getDoc(doc(db, "websites", "haemoglobinstripscom", "pages", "services"));
         if (snap.exists()) {
           setServices(snap.data().services || []);
         }
@@ -48,150 +33,140 @@ export default function ServicesPage() {
         setLoading(false);
       }
     };
-
     fetchServices();
   }, []);
+
   return (
-    <>
-      {/* Banner */}
-      <PageBanner
-        title="Our Services"
-        subtitle="Delivering trusted biomedical and diagnostic services with innovation, precision, and healthcare excellence."
-      />
+    <div className="site4-static">
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <div className="max-w-5xl mx-auto text-center">
+            <span className="inline-flex items-center rounded-full bg-sky-50 border border-sky-100 px-5 py-2 text-sm font-semibold text-sky-700">
+              Clinical Consumables Services
+            </span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mt-5 leading-tight">
+              Diagnostics Consumables Supply & Bulk Distribution Services
+            </h2>
+            <p className="mt-7 text-lg text-slate-600 leading-8">
+              We assist clinical medical teams, path labs, and research institutions in securing batch-tested hemoglobin test strips, chemistry reagents, and diagnostic consumables. We ensure compliance with laboratory storage protocols.
+            </p>
+          </div>
+        </div>
+      </section>
 
-      {/* Services Grid */}
-      <section className="relative overflow-hidden section-padding bg-gradient-to-b from-white via-violet-50 to-white">
-
-        {/* Background Blur */}
-        <div className="absolute -top-10 left-0 h-72 w-72 rounded-full bg-violet-200/20 blur-[120px]" />
-        <div className="absolute -bottom-10 right-0 h-72 w-72 rounded-full bg-purple-200/20 blur-[120px]" />
-
-        <div className="container-custom relative z-10">
-
+      <section className="section-padding bg-sky-50">
+        <div className="container-custom">
           <SectionTitle
             badge="What We Offer"
-            title="Premium Biomedical Services"
-            description="We provide innovative healthcare and biomedical solutions tailored to modern diagnostics and laboratory excellence."
+            title="Consumables Flow Management"
+            description="From recurring shipment schedules to batch verification certificates, we provide comprehensive laboratory supply support."
             center
           />
-
-          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8 mt-16">
             {loading
               ? Array.from({ length: 6 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="rounded-[30px] border border-violet-100 bg-white p-10 shadow-[0_15px_45px_rgba(91,33,182,0.08)]"
-                >
-
-                  {/* Icon Skeleton */}
-                  <div className="mb-8 h-20 w-20 animate-pulse rounded-3xl bg-gradient-to-br from-violet-100 to-violet-200"></div>
-
-                  {/* Title Skeleton */}
-                  <div className="mb-6 h-8 w-3/4 animate-pulse rounded-lg bg-gradient-to-r from-violet-100 to-violet-200"></div>
-
-                  {/* Description Skeleton */}
-                  <div className="space-y-3">
-
-                    <div className="h-4 animate-pulse rounded bg-violet-100"></div>
-
-                    <div className="h-4 w-11/12 animate-pulse rounded bg-violet-100"></div>
-
-                    <div className="h-4 w-8/12 animate-pulse rounded bg-violet-100"></div>
-
+                  <div key={index} className="bg-white rounded-[30px] p-10 border border-sky-100 shadow-sm animate-pulse">
+                    <div className="w-20 h-20 rounded-3xl bg-sky-100 mb-8" />
+                    <div className="h-8 bg-slate-200 rounded mb-6" />
+                    <div className="space-y-3">
+                      <div className="h-4 bg-slate-200 rounded" />
+                      <div className="h-4 bg-slate-200 rounded w-11/12" />
+                    </div>
                   </div>
-
-                </div>
-              ))
-              : services.map((service, index) => (
-                <ServiceCard
-                  key={index}
-                  icon={icons[index]}
-                  title={service.title}
-                  description={service.desc}
-                />
-              ))}
-
+                ))
+              : services.length > 0
+                ? services.map((service, index) => (
+                    <ServiceCard
+                      key={index}
+                      icon={icons[index % icons.length]}
+                      title={service.title}
+                      description={service.desc}
+                    />
+                  ))
+                : (
+                  <div className="lg:col-span-3 text-center py-16">
+                    <p className="text-slate-500">No services currently configured.</p>
+                  </div>
+                )}
           </div>
-
         </div>
-
       </section>
 
-      {/* Working Process */}
-      <section className="relative overflow-hidden section-padding bg-gradient-to-b from-white via-violet-50 to-white">
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <span className="inline-flex rounded-full bg-sky-50 border border-sky-100 px-5 py-2 text-sm font-semibold text-sky-700">
+                Logistics Focus
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-5">
+                Batch Calibration & Temperature Monitored Delivery
+              </h2>
+              <p className="mt-6 text-slate-600 leading-8">
+                Chemical reagents and test strips are highly sensitive to thermal changes and humidity. Our logistics pipeline guarantees that all materials are dispatched in controlled packaging and accompanied by full batch test records for seamless lab calibration.
+              </p>
+            </div>
+            <div className="bg-sky-50 rounded-[35px] p-8 lg:p-10 border border-sky-100">
+              <h3 className="text-2xl font-bold text-slate-900">Supply Deliverables</h3>
+              <div className="space-y-5 mt-8">
+                {[
+                  "Bulk supply of pre-calibrated haemoglobin and glucose test strips.",
+                  "Climate-controlled courier delivery options for reagents.",
+                  "Batch verification documents for quality inspections.",
+                  "Storage guidelines and vial safety reviews.",
+                  "Technical advisory for diagnostic code verification.",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3">
+                    <CheckCircle2 size={22} className="text-sky-700 flex-shrink-0 mt-1" />
+                    <p className="text-slate-600 leading-7">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        {/* Background Blur */}
-        <div className="absolute -top-10 left-0 h-72 w-72 rounded-full bg-violet-200/20 blur-[120px]" />
-        <div className="absolute -bottom-10 right-0 h-72 w-72 rounded-full bg-purple-200/20 blur-[120px]" />
-
-        <div className="container-custom relative z-10">
-
+      <section className="section-padding bg-slate-50">
+        <div className="container-custom">
           <SectionTitle
-            badge="How We Work"
-            title="Simple & Professional Process"
-            description="We follow a streamlined process to ensure reliable biomedical and healthcare solutions."
+            badge="Logistics FAQs"
+            title="Consumables Operations & Logistics FAQ"
+            description="Have questions about reagent shelf life or delivery schedules? Read answers from our logistics manager."
             center
           />
-
-          <div className="mt-16 grid gap-8 lg:grid-cols-3">
-
+          <div className="max-w-4xl mx-auto mt-12 space-y-5">
             {[
               {
-                step: "01",
-                title: "Consultation",
-                desc:
-                  "Understanding healthcare requirements and diagnostics needs.",
+                q: "How are the chemical reagents shipped?",
+                a: "Reagents are packaged in thermal-insulated containers with cooling gel packs to prevent structural changes during transit.",
               },
               {
-                step: "02",
-                title: "Implementation",
-                desc:
-                  "Delivering biomedical equipment and technical setup.",
+                q: "What is your batch calibration protocol?",
+                a: "Every shipment is accompanied by specific calibration values or code keys to program your diagnostic meters.",
               },
               {
-                step: "03",
-                title: "Support",
-                desc:
-                  "Providing maintenance and healthcare assistance.",
+                q: "Do you supply sterile collection tubes in bulk?",
+                a: "Yes, we distribute EDTA and serum collection tubes in bulk alongside our standard test strip range.",
               },
-            ].map((item, index) => (
-
-              <div
-                key={index}
-                className="group relative overflow-hidden rounded-[32px] border border-violet-100 bg-white p-8 shadow-[0_18px_50px_rgba(91,33,182,0.08)] transition-all duration-300 hover:-translate-y-2 hover:border-violet-300 hover:shadow-[0_25px_60px_rgba(91,33,182,0.18)]"
-              >
-
-                {/* Decorative Circle */}
-                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-violet-100/40 blur-2xl transition-all duration-300 group-hover:bg-violet-200/60"></div>
-
-                {/* Step Number */}
-                <span className="relative text-6xl font-extrabold text-violet-200 transition-all duration-300 group-hover:text-violet-700">
-                  {item.step}
-                </span>
-
-                {/* Title */}
-                <h3 className="relative mt-6 text-2xl font-bold text-[#1F2937] transition-colors duration-300 group-hover:text-violet-700">
-                  {item.title}
-                </h3>
-
-                {/* Description */}
-                <p className="relative mt-4 leading-7 text-slate-600">
-                  {item.desc}
-                </p>
-
-              </div>
-
+              {
+                q: "Can we schedule automatic monthly shipments?",
+                a: "Yes, we set up standing purchase agreements to deliver fresh consumables batches automatically based on your lab test volumes.",
+              },
+            ].map((item) => (
+              <details key={item.q} className="group bg-white rounded-2xl border border-slate-200 p-6">
+                <summary className="cursor-pointer list-none font-semibold text-lg text-slate-900 flex items-center justify-between gap-5">
+                  <span>{item.q}</span>
+                  <span className="text-sky-700 text-2xl group-open:rotate-45 transition-transform flex-shrink-0">+</span>
+                </summary>
+                <p className="text-slate-600 leading-7 mt-4 pr-8">{item.a}</p>
+              </details>
             ))}
-
           </div>
-
         </div>
-
       </section>
 
-      {/* CTA */}
       <CTASection />
-    </>
+    </div>
   );
 }

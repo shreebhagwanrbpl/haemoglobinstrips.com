@@ -1,95 +1,55 @@
 "use client";
-
 import { motion } from "framer-motion";
-import {
-  Users,
-  FlaskConical,
-  BadgeCheck,
-  Building2,
-} from "lucide-react";
+import { Users, FlaskConical, BadgeCheck, Building2 } from "lucide-react";
 
 export default function StatsSection() {
   const stats = [
     {
       icon: <Building2 size={34} />,
-      number: "10+",
-      label: "Years Experience",
+      number: "10+ Years",
+      label: "Diagnostic Consumables Expertise",
     },
     {
       icon: <FlaskConical size={34} />,
-      number: "500+",
-      label: "Biomedical Products",
+      number: "100k+ Strips",
+      label: "Shipped Monthly",
     },
     {
       icon: <Users size={34} />,
-      number: "200+",
-      label: "Trusted Clients",
+      number: "300+ Labs",
+      label: "Relying on Our Pipelines",
     },
     {
       icon: <BadgeCheck size={34} />,
       number: "100%",
-      label: "Quality Assurance",
+      label: "Batch-Tested Certifications",
     },
   ];
 
   return (
-    <section className="relative overflow-hidden section-padding bg-gradient-to-b from-violet-50 via-white to-violet-50">
-
-      {/* Background Blur */}
-      <div className="absolute -top-10 left-0 h-72 w-72 rounded-full bg-violet-200/20 blur-[120px]" />
-      <div className="absolute -bottom-10 right-0 h-72 w-72 rounded-full bg-purple-200/20 blur-[120px]" />
-
-      <div className="container-custom relative z-10">
-
-        <div className="rounded-[40px] border border-violet-100 bg-white p-10 shadow-[0_25px_70px_rgba(91,33,182,0.08)] lg:p-16">
-
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-
+    <section className="section-padding bg-slate-50">
+      <div className="container-custom">
+        <div className="bg-white rounded-[40px] p-10 lg:p-16 card-shadow border border-slate-100">
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-10">
             {stats.map((item, index) => (
               <motion.div
                 key={index}
-                initial={{
-                  opacity: 0,
-                  y: 50,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.15,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                className="group rounded-3xl p-6 text-center transition-all duration-300 hover:-translate-y-2 hover:bg-violet-50"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                viewport={{ once: true }}
+                className="text-center"
               >
-
-                {/* Icon */}
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] bg-violet-100 text-violet-700 transition-all duration-300 group-hover:scale-110 group-hover:bg-violet-700 group-hover:text-white">
+                <div className="w-20 h-20 mx-auto rounded-[24px] bg-sky-100 text-sky-700 flex items-center justify-center mb-6">
                   {item.icon}
                 </div>
-
-                {/* Number */}
-                <h3 className="text-4xl font-extrabold text-violet-700 lg:text-5xl">
-                  {item.number}
-                </h3>
-
-                {/* Label */}
-                <p className="mt-3 text-lg text-slate-600">
-                  {item.label}
-                </p>
-
+                <h3 className="text-3xl lg:text-4xl font-bold text-slate-900">{item.number}</h3>
+                <p className="mt-3 text-slate-500 text-lg">{item.label}</p>
               </motion.div>
             ))}
-
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 }

@@ -8,5 +8,5 @@ export default async function Page({ params }) {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
-  return <AboutPage city={city} />;
+  return <div className="site4-static"><AboutPage city={city} /></div>;
 }

@@ -7,8 +7,6 @@ import Image from "next/image";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
-import CBG from "../components/img/CBG.png";
-
 import {
   ArrowRight,
   ShieldCheck,
@@ -30,7 +28,7 @@ export default function HeroSection({ city }) {
     const fetchHeroData = async () => {
       try {
         const snap = await getDoc(
-          doc(db, "websites", "centralbiomedicals", "pages", "home")
+          doc(db, "websites", "haemoglobinstripscom", "pages", "home")
         );
 
         if (snap.exists()) {
@@ -55,38 +53,57 @@ export default function HeroSection({ city }) {
     return districtSlug ? `/${districtSlug}${path}` : path;
   };
 
-  return (
-    <section className="gradient-bg overflow-hidden">
-      <div className="container-custom min-h-[85vh] py-20 lg:py-0 grid lg:grid-cols-2 gap-14 items-center">
+  // Helper to highlight the last word of the title in purple
+  const renderTitle = (title) => {
+    if (!title) return "";
+    const words = title.split(" ");
+    if (words.length <= 1) return title;
+    const lastWord = words.pop();
+    return (
+      <>
+        {words.join(" ")}{" "}
+        <span className="text-[#5B21B6]">{lastWord}</span>
+      </>
+    );
+  };
 
-        {/* Left Content */}
+  return (
+    <section className="relative overflow-hidden min-h-[85vh] lg:min-h-[92vh] flex flex-col justify-between bg-gradient-to-br from-[#FAFAFE] via-white to-[#F5F3FF] pt-12 pb-8 lg:pt-16 lg:pb-10">
+      {/* Decorative background shapes */}
+      <div className="absolute -left-20 -top-20 h-96 w-96 rounded-full bg-violet-100/40 blur-3xl pointer-events-none" />
+      <div className="absolute right-1/2 bottom-20 h-[500px] w-[500px] rounded-full bg-purple-50/30 blur-3xl pointer-events-none" />
+
+      {/* Main content grid (Content Left, Image Right) */}
+      <div className="container-custom relative z-10 w-full grid lg:grid-cols-[1.15fr_0.85fr] gap-10 xl:gap-14 items-center">
+
+        {/* LEFT COLUMN: HERO CONTENT */}
         <motion.div
-          initial={{ opacity: 0, y: 70 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
+          className="flex flex-col items-start text-left z-10 lg:pr-6"
         >
           {/* Badge */}
-          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-5 py-2.5 text-sm font-semibold text-violet-700 shadow-sm">
-            <ShieldCheck size={18} className="text-violet-600" />
-            Trusted Biomedical Systems
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50 px-4.5 py-2 text-sm font-semibold text-[#5B21B6] shadow-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#5B21B6] animate-pulse" />
+            Trusted by Labs. Chosen for Excellence.
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl font-extrabold leading-tight text-[#1F2937] sm:text-5xl lg:text-7xl">
+          <h1 className="text-4xl font-black leading-[1.08] tracking-tight text-[#1F2937] sm:text-5xl lg:text-[3.5rem] xl:text-[4rem]">
             {loading ? (
               <div className="animate-pulse space-y-4">
-                <div className="h-12 w-[80%] rounded-xl bg-violet-100"></div>
-                <div className="h-12 w-[60%] rounded-xl bg-violet-100"></div>
+                <div className="h-12 w-[85%] rounded-xl bg-violet-100"></div>
                 <div className="h-12 w-[70%] rounded-xl bg-violet-100"></div>
               </div>
             ) : (
               <>
-                {heroData.title}
+                {renderTitle(heroData.title)}
 
                 {city && (
                   <>
                     <br />
-                    <span className="text-2xl font-bold text-violet-600 lg:text-4xl">
+                    <span className="mt-2 inline-block text-2xl font-bold text-violet-600 sm:text-3xl lg:text-4xl">
                       in {city}
                     </span>
                   </>
@@ -97,25 +114,26 @@ export default function HeroSection({ city }) {
 
           {/* Description */}
           {loading ? (
-            <div className="mt-7 animate-pulse space-y-3">
+            <div className="mt-7 animate-pulse space-y-3 w-full">
               <div className="h-4 w-full rounded bg-violet-100"></div>
               <div className="h-4 w-[90%] rounded bg-violet-100"></div>
-              <div className="h-4 w-[75%] rounded bg-violet-100"></div>
             </div>
           ) : (
-            <p className="mt-7 max-w-xl text-lg leading-8 text-slate-600">
+            <p className="mt-7 text-base md:text-lg leading-relaxed text-[#4B5563] font-medium">
               {heroData.description}
+
               {city && (
                 <>
                   {" "}
-                  across <strong className="text-violet-700">{city}</strong>
+                  across{" "}
+                  <strong className="text-[#5B21B6] font-bold">{city}</strong>
                 </>
               )}
             </p>
           )}
 
           {/* Buttons */}
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <div className="mt-9 flex flex-col gap-4 sm:flex-row w-full sm:w-auto">
             {loading ? (
               <>
                 <div className="h-12 w-44 animate-pulse rounded-xl bg-violet-100"></div>
@@ -123,10 +141,9 @@ export default function HeroSection({ city }) {
               </>
             ) : (
               <>
-                <Link href={makeLink("/services")}>
-                  <button className="group flex items-center gap-2 rounded-xl bg-[#5B21B6] px-7 py-3 font-semibold text-white shadow-lg shadow-violet-300/40 transition-all duration-300 hover:-translate-y-1 hover:bg-[#6D28D9]">
-                    {heroData.button1Text || "Explore Services"}
-
+                <Link href={makeLink("/items")} className="w-full sm:w-auto">
+                  <button className="group w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-[#5B21B6] px-8 py-3.5 font-bold text-white shadow-lg shadow-violet-300/40 transition-all duration-300 hover:-translate-y-1 hover:bg-[#6D28D9]">
+                    {heroData.button1Text || "Explore Products"}
                     <ArrowRight
                       size={18}
                       className="transition-transform duration-300 group-hover:translate-x-1"
@@ -134,105 +151,85 @@ export default function HeroSection({ city }) {
                   </button>
                 </Link>
 
-                <Link href={makeLink("/contact")}>
-                  <button className="rounded-xl border-2 border-violet-600 bg-white px-7 py-3 font-semibold text-violet-700 transition-all duration-300 hover:bg-violet-50 hover:text-violet-800">
+                <Link href={makeLink("/contact")} className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto rounded-xl border-2 border-violet-600 bg-white px-8 py-3.5 font-bold text-violet-750 transition-all duration-300 hover:-translate-y-1 hover:bg-violet-50 hover:text-violet-800">
                     {heroData.button2Text || "Contact Us"}
                   </button>
                 </Link>
               </>
             )}
           </div>
-
-          {/* Stats */}
-          <div className="mt-14 flex flex-wrap gap-6">
-            <div className="min-w-[170px] rounded-2xl border border-violet-100 bg-white px-6 py-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-violet-300 hover:shadow-xl">
-              <h3 className="text-3xl font-extrabold text-violet-600">
-                10+
-              </h3>
-              <p className="mt-1 text-slate-500">
-                Years Experience
-              </p>
-            </div>
-
-            <div className="min-w-[170px] rounded-2xl border border-violet-100 bg-white px-6 py-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-violet-300 hover:shadow-xl">
-              <h3 className="text-3xl font-extrabold text-violet-600">
-                500+
-              </h3>
-              <p className="mt-1 text-slate-500">
-                Products Delivered
-              </p>
-            </div>
-
-            <div className="min-w-[170px] rounded-2xl border border-violet-100 bg-white px-6 py-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-violet-300 hover:shadow-xl">
-              <h3 className="text-3xl font-extrabold text-violet-600">
-                100%
-              </h3>
-              <p className="mt-1 text-slate-500">
-                Quality Assurance
-              </p>
-            </div>
-          </div>
         </motion.div>
 
-        {/* Right Side */}
+        {/* Empty Spacer Column for layout spacing on desktop */}
+        <div className="hidden lg:block h-10 pointer-events-none" />
+
+        {/* RIGHT COLUMN: SCREEN BLEED IMAGE BANNER */}
         <motion.div
-          initial={{ opacity: 0, x: 80 }}
+          initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative"
+          className="relative lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-[46%] w-full h-[320px] sm:h-[400px] lg:h-full overflow-hidden z-0"
         >
-          {/* Image Card */}
-          <div className="rounded-[40px] border border-violet-100 bg-white p-6 shadow-[0_25px_60px_rgba(91,33,182,0.12)]">
-            <Image
-              src={CBG}
-              alt="Central Biomedical"
-              width={1200}
-              height={900}
-              className="h-[350px] w-full rounded-[28px] object-cover object-[20%_center] sm:h-[450px] lg:h-[550px]"
-            />
+          {/* Main lab image */}
+          <Image
+            src="/herobanner.png"
+            alt="Biomedical diagnostics laboratory equipment and analyzer systems banner"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover object-left"
+          />
+
+          {/* CURVED OVERLAY DIVISION SHAPES (Visible on desktop lg screens) */}
+          <div className="absolute left-0 top-0 bottom-0 w-72 z-10 pointer-events-none hidden lg:block -ml-36">
+            <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+              {/* Layer 1: Soft light violet wave */}
+              <path d="M 0 0 L 50 0 C 80 25, 90 75, 50 100 L 0 100 Z" fill="#DDD6FE" opacity="0.4" />
+              {/* Layer 2: Medium purple accent wave */}
+              <path d="M 0 0 L 50 0 C 70 25, 80 75, 50 100 L 0 100 Z" fill="#C084FC" opacity="0.25" />
+              {/* Layer 3: Solid background color mask that blends with the left background */}
+              <path d="M 0 0 L 50 0 C 60 25, 70 75, 50 100 L 0 100 Z" fill="#FAFAFE" />
+            </svg>
           </div>
 
-          {/* Floating Card 1 */}
-          <div
-            className="absolute -left-10 top-10 hidden items-center gap-4 rounded-3xl border border-violet-200 bg-white px-5 py-4 shadow-[0_15px_40px_rgba(91,33,182,0.12)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-400 hover:shadow-violet-300/40 lg:flex"
-            style={{ marginTop: "-27px" }}
-          >
-            <div className="rounded-2xl bg-violet-100 p-3">
-              <Microscope className="text-violet-700" size={26} />
-            </div>
-
-            <div>
-              <h4 className="font-bold text-[#1F2937]">
-                Modern Labs
-              </h4>
-              <p className="text-sm text-slate-500">
-                Precision Equipment
-              </p>
-            </div>
-          </div>
-
-          {/* Floating Card 2 */}
-          <div className="absolute -right-8 bottom-10 hidden items-center gap-4 rounded-3xl border border-violet-200 bg-white px-5 py-4 shadow-[0_15px_40px_rgba(91,33,182,0.12)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-400 hover:shadow-violet-300/40 lg:flex">
-            <div className="rounded-2xl bg-violet-100 p-3">
-              <BadgeCheck className="text-violet-700" size={26} />
-            </div>
-
-            <div>
-              <h4 className="font-bold text-[#1F2937]">
-                Trusted Quality
-              </h4>
-              <p className="text-sm text-slate-500">
-                Certified Solutions
-              </p>
-            </div>
-          </div>
-
-          {/* Decorative Blur */}
-          <div className="absolute -top-8 -right-8 -z-10 h-40 w-40 rounded-full bg-violet-300/30 blur-3xl"></div>
-
-          <div className="absolute -bottom-10 -left-10 -z-10 h-48 w-48 rounded-full bg-purple-300/20 blur-3xl"></div>
+          {/* Soft shadow/fade overlay on the left boundary for mobile view */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#FAFAFE] to-transparent lg:hidden pointer-events-none" />
         </motion.div>
 
+      </div>
+
+      {/* BOTTOM AREA: HORIZONTAL STATISTICS PANEL CARD */}
+      <div className="container-custom relative z-10 w-full mt-10 lg:mt-14">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="rounded-[2rem] border border-violet-100/60 bg-white/95 px-6 py-5 lg:px-12 lg:py-6 shadow-[0_15px_50px_rgba(91,33,182,0.06)] backdrop-blur-md flex flex-col md:flex-row items-center justify-around gap-8 md:gap-4 w-full"
+        >
+          {[
+            { value: "10+", label: "Years Experience", icon: ShieldCheck },
+            { value: "500+", label: "Products Delivered", icon: Microscope },
+            { value: "100%", label: "Quality Assurance", icon: BadgeCheck }
+          ].map((stat, i) => {
+            const Icon = stat.icon;
+            return (
+              <div key={i} className="flex items-center gap-4 min-w-[200px] w-full md:w-auto justify-center md:justify-start">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-violet-50 text-[#5B21B6] shadow-sm">
+                  <Icon size={20} />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-2xl font-black text-[#5B21B6] leading-none mb-1">
+                    {stat.value}
+                  </h3>
+                  <p className="text-sm font-semibold text-slate-500">
+                    {stat.label}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );
