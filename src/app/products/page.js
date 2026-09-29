@@ -104,7 +104,7 @@ export default function ProductsPage() {
 
       });
 
-    }, [search]);
+    }, [products, search]);
 
   const groupedProducts =
     useMemo(() => {
@@ -175,7 +175,7 @@ export default function ProductsPage() {
   };
 
   return (
-  <div className="site4-static">
+  <>
     <PageBanner
       title="Clinical Strip & Reagent Range"
       subtitle="Explore advanced biomedical and diagnostic equipment designed for modern healthcare excellence."
@@ -183,7 +183,7 @@ export default function ProductsPage() {
 
     <section className="py-24 bg-slate-50">
 
-      <div className="max-w-7xl mx-auto px-5">
+      <div className="container-custom">
 
         <SectionTitle
           badge="Featured Products"
@@ -213,7 +213,7 @@ export default function ProductsPage() {
               onChange={(e) =>
                 setSearch(e.target.value)
               }
-              className="w-full h-12 mt-5 rounded-xl border border-slate-300 px-4 outline-none focus:border-sky-600"
+              className="w-full h-12 mt-5 rounded-xl border border-slate-300 px-4 outline-none focus:border-violet-600 focus:ring-4 focus:ring-violet-100"
             />
 
             <div className="mt-6 space-y-3">
@@ -233,7 +233,7 @@ export default function ProductsPage() {
 
                     ${
                       activeCategory === category
-                        ? "bg-sky-700 text-white"
+                        ? "bg-[#5B21B6] text-white"
                         : "bg-white hover:bg-slate-50"
                     }
                     `}
@@ -433,7 +433,7 @@ export default function ProductsPage() {
                                 className="w-full lg:w-auto"
                               >
 
-                                <button className="bg-sky-700 hover:bg-sky-800 text-white font-semibold px-8 py-4 rounded-xl transition w-full">
+                                <button className="bg-[#5B21B6] hover:bg-[#6D28D9] text-white font-semibold px-8 py-4 rounded-xl transition w-full shadow-md shadow-violet-300/30">
 
                                   View Details
 
@@ -472,7 +472,7 @@ export default function ProductsPage() {
 
       <section className="py-24 bg-white">
 
-        <div className="max-w-7xl mx-auto px-5">
+        <div className="container-custom">
 
           <SectionTitle
             badge="Why Choose Clinical Strip & Reagent Range"
@@ -512,10 +512,10 @@ export default function ProductsPage() {
 
               <div
                 key={index}
-                className="bg-slate-50 rounded-[30px] p-8 border border-slate-200 text-center hover:shadow-xl transition-all duration-300"
+                className="bg-slate-50 rounded-[30px] p-8 border border-slate-200 text-center hover:border-violet-200 hover:shadow-xl transition-all duration-300"
               >
 
-                <div className="w-20 h-20 mx-auto rounded-3xl bg-sky-100 flex items-center justify-center text-sky-700 mb-6">
+                <div className="w-20 h-20 mx-auto rounded-3xl bg-violet-100 flex items-center justify-center text-[#5B21B6] mb-6 shadow-sm">
 
                   {item.icon}
 
@@ -547,7 +547,7 @@ export default function ProductsPage() {
 
       <CTASection />
 
-    </div>
+    </>
 
   );
 

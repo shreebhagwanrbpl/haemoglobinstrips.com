@@ -6,11 +6,22 @@ import ServicesPreview from "@/components/ServicesPreview";
 import Testimonials from "@/components/Testimonials";
 import CTASection from "@/components/CTASection";
 import SeoContent from "@/components/SeoContent";
+import { fetchHomeData } from "@/lib/data-fetcher-server";
 
-export default function Home({ city = "" }) {
+export const revalidate = 3600;
+
+export default async function Home({ city = "" }) {
+  let homeData = null;
+  try {
+    const raw = await fetchHomeData();
+    homeData = raw ? JSON.parse(JSON.stringify(raw)) : null;
+  } catch (err) {
+    console.error("Failed to load home data on server:", err);
+  }
+
   return (
-    <div className="site4-static">
-      <HeroSection city={city} />
+    <>
+      <HeroSection city={city} initialHeroData={homeData} />
       <WhyChooseUs city={city} />
       <ServicesPreview city={city} />
       <TrustedBrands city={city} />
@@ -18,6 +29,6 @@ export default function Home({ city = "" }) {
       <SeoContent city={city} />
       <Testimonials city={city} />
       <CTASection city={city} />
-    </div>
+    </>
   );
 }

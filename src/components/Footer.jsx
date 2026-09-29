@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db, doc, collection, getDoc, getDocs, addDoc, onSnapshot } from "@/lib/firestore-shim";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -208,7 +207,7 @@ export default function Footer() {
 
           {/* Logo & Description */}
           <div className="lg:col-span-3">
-            <h2 className="text-2xl font-bold text-sky-700">
+            <h2 className="text-2xl font-bold text-[#5B21B6]">
               Raj
               <span className="text-slate-900">
                 {" "}Biosis
@@ -225,7 +224,7 @@ export default function Footer() {
                 href="https://www.facebook.com/rajbiosispvtltd/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-sky-600 hover:text-white transition-all duration-300"
+                className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-[#5B21B6] hover:text-white transition-all duration-300"
               >
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M9 8H7v3h2v9h4v-9h3.6l.4-3H13V6c0-.5.5-1 1-1h2V1H13c-2.8 0-5 2.2-5 5v2z" />
@@ -252,23 +251,23 @@ export default function Footer() {
 
             <div className="flex flex-col gap-3 text-slate-600">
 
-              <Link href={makeLink("/")} className="hover:text-sky-700 transition">
+              <Link href={makeLink("/")} className="hover:text-[#5B21B6] transition">
                 Home
               </Link>
 
-              <Link href={makeLink("/about")} className="hover:text-sky-700 transition">
+              <Link href={makeLink("/about")} className="hover:text-[#5B21B6] transition">
                 About
               </Link>
 
-              <Link href={makeLink("/services")} className="hover:text-sky-700 transition">
+              <Link href={makeLink("/services")} className="hover:text-[#5B21B6] transition">
                 Services
               </Link>
 
-              <Link href={makeLink("/items")} className="hover:text-sky-700 transition">
+              <Link href={makeLink("/items")} className="hover:text-[#5B21B6] transition">
                 Products
               </Link>
 
-              <Link href={makeLink("/contact")} className="hover:text-sky-700 transition">
+              <Link href={makeLink("/contact")} className="hover:text-[#5B21B6] transition">
                 Contact
               </Link>
 
@@ -285,7 +284,7 @@ export default function Footer() {
               {categories.map((cat) => {
                 const catSlug = cat.replace(/\s+/g, "-").toLowerCase();
                 return (
-                  <Link key={cat} href={makeLink(`/items#${catSlug}`)} className="hover:text-sky-700 transition">
+                  <Link key={cat} href={makeLink(`/items#${catSlug}`)} className="hover:text-[#5B21B6] transition">
                     {cat}
                   </Link>
                 );
@@ -319,7 +318,7 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin
                   size={18}
-                  className="mt-1 text-sky-700 flex-shrink-0"
+                  className="mt-1 text-[#5B21B6] flex-shrink-0"
                 />
                 <p>{dynamicAddress}</p>
               </div>
@@ -327,11 +326,11 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <Phone
                   size={18}
-                  className="mt-1 text-sky-700 flex-shrink-0"
+                  className="mt-1 text-[#5B21B6] flex-shrink-0"
                 />
                 <div className="flex flex-col">
                   {phoneValues.map((num, idx) => (
-                    <a key={idx} href={`tel:${num}`} className="hover:text-sky-700 transition">
+                    <a key={idx} href={`tel:${num}`} className="hover:text-[#5B21B6] transition">
                       {num}
                     </a>
                   ))}
@@ -342,9 +341,9 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <Mail
                   size={18}
-                  className="text-sky-700 flex-shrink-0"
+                  className="text-[#5B21B6] flex-shrink-0"
                 />
-                <a href={`mailto:${email}`} className="hover:text-sky-700 transition">
+                <a href={`mailto:${email}`} className="hover:text-[#5B21B6] transition">
                   {email}
                 </a>
               </div>

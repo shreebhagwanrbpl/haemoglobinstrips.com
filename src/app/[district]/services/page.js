@@ -59,7 +59,7 @@ export default async function Page({ params }) {
   ]);
 
   return (
-    <div className="site4-static">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -69,6 +69,6 @@ export default async function Page({ params }) {
         subtitle={`Delivering trusted biomedical services, technical support, and equipment calibration in ${districtName}, ${stateName}.`}
       />
       <ServicesClient initialServices={services} districtData={districtData} />
-    </div>
+    </>
   );
 }

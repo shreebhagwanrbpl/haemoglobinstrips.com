@@ -44,9 +44,9 @@ export default function WhyChooseUs() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
               viewport={{ once: true }}
-              className="bg-slate-50 p-8 rounded-[28px] border border-slate-100 hover:-translate-y-2 transition-all duration-300 card-shadow"
+              className="bg-slate-50 p-8 rounded-[28px] border border-slate-100 hover:border-violet-200 hover:-translate-y-2 transition-all duration-300 card-shadow"
             >
-              <div className="w-16 h-16 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-violet-100 text-[#5B21B6] flex items-center justify-center mb-6 shadow-sm">
                 {item.icon}
               </div>
               <h3 className="text-xl font-semibold mb-4 text-slate-900">{item.title}</h3>

@@ -41,7 +41,7 @@ export default function Testimonials() {
               className="bg-slate-50 rounded-[32px] p-8 border border-slate-100 card-shadow"
             >
               <div className="flex gap-1 text-yellow-400 text-xl mb-5">★★★★★</div>
-              <p className="text-slate-600 leading-8 italic">"{item.review}"</p>
+              <p className="text-slate-600 leading-8 italic">&ldquo;{item.review}&rdquo;</p>
               <div className="mt-8">
                 <h4 className="font-semibold text-lg">{item.name}</h4>
                 <p className="text-slate-500">{item.role}</p>

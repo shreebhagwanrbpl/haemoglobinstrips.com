@@ -1,10 +1,10 @@
 "use client";
 
+import { db, doc, collection, getDoc, getDocs, addDoc, onSnapshot } from "@/lib/firestore-shim";
 import { useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import toast from "react-hot-toast";
 import { Mail, Phone, MapPin, Clock3 } from "lucide-react";
+import PageBanner from "@/components/PageBanner";
 import CTASection from "@/components/CTASection";
 
 export default function ContactClient({ contactInfo = [], districtData = null }) {
@@ -13,7 +13,6 @@ export default function ContactClient({ contactInfo = [], districtData = null })
     name: "",
     email: "",
     phone: "",
-    subject: "",
     message: "",
   });
 
@@ -63,7 +62,6 @@ export default function ContactClient({ contactInfo = [], districtData = null })
         name: "",
         email: "",
         phone: "",
-        subject: "",
         message: "",
       });
     } catch (err) {
@@ -86,14 +84,30 @@ export default function ContactClient({ contactInfo = [], districtData = null })
   const addressVal = getContactField(["address", "office address", "address/office address"]);
   const hoursVal = getContactField(["working hours", "hours", "timing", "timings"]);
 
-  const dynamicAddress = districtData
-    ? `${districtData.district}, ${districtData.state}, India`
+  const districtName = districtData?.district || "";
+  const stateName = districtData?.state || "";
+
+  const dynamicAddress = districtName
+    ? `${districtName}, ${stateName ? stateName + ", " : ""}India`
     : addressVal || "F-4, 1st Floor, Plot No. 16, D-Block Tagor Nagar, on Ajmer-Delhi, 200 Feet Bypass Rd, Jaipur, Rajasthan 302021";
 
   const mapAddress = encodeURIComponent(dynamicAddress);
 
+  const bannerTitle = districtName
+    ? `Contact Our Diagnostics Division in ${districtName}`
+    : "Contact Our Diagnostics Division";
+
+  const bannerSubtitle = districtName
+    ? `Connecting hospitals, clinics, and laboratories in ${districtName} with pre-calibrated test strips and chemical reagents.`
+    : "Ensuring clinical diagnostics consistency with pre-calibrated test strips and chemical reagents.";
+
   return (
     <>
+      <PageBanner
+        title={bannerTitle}
+        subtitle={bannerSubtitle}
+      />
+
       <section className="section-padding bg-white">
         <div className="container-custom grid lg:grid-cols-2 gap-14">
           {/* Left Info */}
@@ -103,7 +117,7 @@ export default function ContactClient({ contactInfo = [], districtData = null })
             </span>
 
             <h2 className="section-title text-[#1F2937]">
-              Let's Start a Conversation
+              Let&apos;s Start a Conversation
             </h2>
 
             <p className="section-subtitle">
@@ -220,15 +234,6 @@ export default function ContactClient({ contactInfo = [], districtData = null })
                     phone: e.target.value.replace(/\D/g, ""),
                   })
                 }
-                className="w-full rounded-2xl border border-violet-100 bg-white px-5 py-4 text-slate-700 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-violet-600 focus:ring-4 focus:ring-violet-100"
-              />
-
-              <input
-                type="text"
-                name="subject"
-                placeholder="Laboratory Requirement"
-                value={form.subject}
-                onChange={handleChange}
                 className="w-full rounded-2xl border border-violet-100 bg-white px-5 py-4 text-slate-700 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-violet-600 focus:ring-4 focus:ring-violet-100"
               />
 

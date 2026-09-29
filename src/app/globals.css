@@ -230,17 +230,4 @@ header {
 }
 
 
-/* SITE 4 — terracotta / laboratory warmth */
-.site4-static{--sv-accent:#c2410c;--sv-deep:#7c2d12;--sv-soft:#fff7ed}
-.site4-static h1,.site4-static h2,.site4-static h3{letter-spacing:-.03em}
-.site4-static .container-custom{max-width:1200px}
-.site4-static section{background:#fffaf5!important}
-.site4-static section:nth-of-type(2n){background:#fff!important}
-.site4-static .rounded-3xl,.site4-static .rounded-\[40px\]{border-radius:32px 8px 32px 8px!important}
-.site4-static .card-shadow{box-shadow:0 20px 45px rgba(124,45,18,.09)!important}
-.site4-static button{border-radius:14px 4px 14px 4px!important}
-.site4-static input,.site4-static textarea{border-radius:12px 4px 12px 4px!important}
-.site4-static section:has(form) .container-custom{grid-template-columns:.9fr 1.1fr}
-.site4-static section:has(form) .container-custom>div:last-child{border:1px solid #fed7aa;background:#fff7ed!important}
-.site4-static iframe{border-radius:30px 6px 30px 6px!important}
 

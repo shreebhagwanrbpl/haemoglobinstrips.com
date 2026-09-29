@@ -1,29 +1,22 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
-import toast from "react-hot-toast";
-
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
-
+import Image from "next/image";
+import { toast } from "react-hot-toast";
+import { WEBSITE_ID } from "@/lib/catalog-utils";
+import { db, doc, collection, getDoc, getDocs, addDoc, onSnapshot } from "@/lib/firestore-shim";
+import { fetchFullCatalog } from "@/lib/data-fetcher";
+import { Download } from "lucide-react";
 import {
     FaPlay,
     FaShareAlt,
+    FaLink,
     FaWhatsapp,
     FaFacebook,
     FaInstagram,
-    FaLink,
 } from "react-icons/fa";
 
-import {
-    doc,
-    getDoc,
-    addDoc,
-    collection,
-} from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import { fetchFullCatalog } from "@/lib/data-fetcher";
-import { Download } from "lucide-react";
 export default function ProductDetails({ slug, district, initialProduct }) {
     const [product, setProduct] = useState(initialProduct || null);
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -46,8 +39,8 @@ export default function ProductDetails({ slug, district, initialProduct }) {
     const [downloading, setDownloading] = useState(false);
     const [brochureImage, setBrochureImage] = useState("");
     const [contactData, setContactData] = useState({
-        phone: "+91 9983123469\n+91 9983333489",
-        email: "rajbiosis@yahoo.in",
+        phone: "8318368383",
+        email: "mail@rajbiosis.com",
         address: "F-4, 1st Floor, Plot No. 16, D-Block Tagor Nagar, on Ajmer-Delhi, 200 Feet Bypass Rd, Jaipur, Rajasthan 302021"
     });
 
@@ -96,7 +89,7 @@ export default function ProductDetails({ slug, district, initialProduct }) {
         const loadContact = async () => {
             try {
                 const snap = await getDoc(
-                    doc(db, "websites", "haemoglobinstripscom", "pages", "contact")
+                    doc(db, "websites", WEBSITE_ID, "pages", "contact")
                 );
                 if (snap.exists()) {
                     const info = snap.data().contactInfo || [];
@@ -122,7 +115,7 @@ export default function ProductDetails({ slug, district, initialProduct }) {
             if (!district) return;
             try {
                 const snap = await getDoc(
-                    doc(db, "websites", "haemoglobinstripscom", "districts", district)
+                    doc(db, "websites", WEBSITE_ID, "districts", district)
                 );
                 if (snap.exists()) {
                     setDistrictData(snap.data());
@@ -544,7 +537,8 @@ ${product?.desc}
 
 
                                     <Image
-                                        src={selectedImage || product.image}
+                                        src={selectedImage || product.image || "/placeholder.svg"}
+                                        unoptimized
                                         alt={product.title}
                                         fill
                                         priority
@@ -575,8 +569,8 @@ ${product?.desc}
 
                             {(product.images?.length
                                 ? product.images
-                                : [product.image]
-                            ).map((img, index) => (
+                                : [product.image || "/placeholder.svg"]
+                            ).filter(Boolean).map((img, index) => (
 
 
                                 <button
@@ -604,7 +598,8 @@ ${product?.desc}
 
 
                                     <Image
-                                        src={img}
+                                        src={img || "/placeholder.svg"}
+                                        unoptimized
                                         alt=""
                                         width={80}
                                         height={80}
@@ -1200,67 +1195,6 @@ ${product?.desc}
                                     "No description available."}
 
                             </p>
-
-
-
-
-
-                            {/* Specifications Table */}
-                            <div className="mt-10 overflow-x-auto">
-
-                                <table className="w-full border border-[#E2E8F0]">
-
-
-                                    <tbody>
-
-
-                                        {[
-                                            ["Brand", product.brand],
-                                            ["Model", product.model],
-                                            ["Usage", product.usage],
-                                            ["Automation", product.automation],
-                                            ["Capacity", product.capacity],
-                                            ["Throughput", product.throughput],
-                                        ].map(([label, value], index) => (
-
-                                            <tr key={index}>
-
-
-                                                <td className="
-              border 
-              border-[#E2E8F0]
-              p-3
-              font-semibold
-              text-[#0F172A]
-              bg-[#F8FAFC]
-            ">
-                                                    {label}
-                                                </td>
-
-
-                                                <td className="
-              border 
-              border-[#E2E8F0]
-              p-3
-              text-[#475569]
-            ">
-                                                    {value || "N/A"}
-                                                </td>
-
-
-                                            </tr>
-
-                                        ))}
-
-
-                                    </tbody>
-
-
-                                </table>
-
-
-                            </div>
-
 
 
 

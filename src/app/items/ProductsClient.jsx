@@ -166,7 +166,6 @@ export default function ProductsClient({ initialProducts = [], district = null, 
 
   // Combined single-pass product filtering, grouping, category count, and sorting for maximum performance
   const { filteredProducts, sortedGroupedProducts, categoryCounts } = useMemo(() => {
-    const start = performance.now();
     const query = productSearch.trim().toLowerCase();
     const filtered = query
       ? initialProducts.filter((item) => {
@@ -222,9 +221,6 @@ export default function ProductsClient({ initialProducts = [], district = null, 
       });
       sortedObj[cat] = Object.fromEntries(subEntries);
     }
-
-    const end = performance.now();
-    console.log(`[ProductsClient] Grouping, filtering, and sorting completed in ${(end - start).toFixed(2)}ms`);
 
     return {
       filteredProducts: filtered,

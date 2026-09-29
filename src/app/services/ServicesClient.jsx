@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { WEBSITE_ID } from "@/lib/catalog-utils";
+import { db, doc, collection, getDoc, getDocs, addDoc, onSnapshot } from "@/lib/firestore-shim";
 import {
   Microscope,
   FlaskConical,
@@ -9,8 +11,6 @@ import {
   Wrench,
   Activity,
 } from "lucide-react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import SectionTitle from "@/components/SectionTitle";
 import ServiceCard from "@/components/ServiceCard";
 import CTASection from "@/components/CTASection";
@@ -36,7 +36,7 @@ export default function ServicesClient({ initialServices = [], districtData = nu
     const fetchServices = async () => {
       try {
         const snap = await getDoc(
-          doc(db, "websites", "haemoglobinstripscom", "pages", "services")
+          doc(db, "websites", WEBSITE_ID, "pages", "services")
         );
         if (snap.exists()) {
           setServices(snap.data().services || []);

@@ -16,10 +16,10 @@ export default async function ContactPage() {
   let contactInfo = [];
   try {
     const data = await fetchContactData();
-    contactInfo = data?.contactInfo || [];
+    contactInfo = data?.contactInfo ? JSON.parse(JSON.stringify(data.contactInfo)) : [];
   } catch (err) {
     console.error("Failed to load contact details on server:", err);
   }
 
-  return <div className="site4-static"><ContactClient contactInfo={contactInfo} /></div>;
+  return <ContactClient contactInfo={contactInfo} />;
 }
